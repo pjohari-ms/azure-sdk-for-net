@@ -44,6 +44,11 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+# Add test filters with https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests
+# Filter expression must be prefixed with an operator & or | as it will be joined with an existing statement
+- name: TestFilters
+  type: string
+  default: ""
 - name: DeployTestResources
   type: boolean
   default: true
@@ -131,6 +136,7 @@ stages:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               Project: ${{ parameters.Project }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              TestFilters: ${{ parameters.TestFilters }}
               DeployTestResources: ${{ parameters.DeployTestResources }}
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).

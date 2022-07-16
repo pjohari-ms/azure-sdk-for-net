@@ -36,6 +36,11 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+# Add test filters with https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests
+# Filter expression must be prefixed with an operator & or | as it will be joined with an existing statement
+- name: TestFilters
+  type: string
+  default: ""
 - name: TestTimeoutInMinutes
   type: number
   default: 60
@@ -73,6 +78,7 @@ stages:
         ArtifactName: packages
         BuildSnippets: ${{ parameters.BuildSnippets }}
         TestSetupSteps: ${{ parameters.TestSetupSteps }}
+        TestFilters: ${{ parameters.TestFilters }}
         TestTimeoutInMinutes: ${{ parameters.TestTimeoutInMinutes }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:

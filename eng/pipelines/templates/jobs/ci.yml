@@ -23,6 +23,11 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+# Add test filters with https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests
+# Filter expression must be prefixed with an operator & or | as it will be joined with an existing statement
+- name: TestFilters
+  type: string
+  default: ""
 - name: TestTimeoutInMinutes
   type: number
 - name: MatrixConfigs
@@ -239,4 +244,5 @@ jobs:
         ServiceToTest: ${{ coalesce(parameters.ServiceToTest, parameters.ServiceDirectory) }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         TestSetupSteps: ${{ parameters.TestSetupSteps }}
+        TestFilters: ${{ parameters.TestFilters }}
         TestTimeoutInMinutes: ${{ parameters.TestTimeoutInMinutes }}

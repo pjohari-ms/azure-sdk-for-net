@@ -32,6 +32,11 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+# Add test filters with https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests
+# Filter expression must be prefixed with an operator & or | as it will be joined with an existing statement
+- name: TestFilters
+  type: string
+  default: ""
 - name: DeployTestResources
   type: boolean
   default: true
@@ -123,7 +128,7 @@ jobs:
       - pwsh: >
           dotnet test eng/service.proj
           --framework $(TestTargetFramework)
-          --filter "TestCategory!=Manually"
+          --filter "TestCategory!=Manually ${{ parameters.TestFilters }}"
           --logger "trx"
           --logger:"console;verbosity=normal"
           --blame-crash-dump-type full --blame-hang-dump-type full --blame-hang-timeout ${{parameters.TimeoutInMinutes}}minutes

@@ -18,6 +18,11 @@ parameters:
 - name: DependsOn
   type: string
   default: ''
+# Add test filters with https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests
+# Filter expression must be prefixed with an operator & or | as it will be joined with an existing statement
+- name: TestFilters
+  type: string
+  default: ""
 - name: UsePlatformContainer
   type: boolean
   default: false
@@ -64,7 +69,7 @@ jobs:
         parameters:
           NuGetCacheKey: Test
       - script: >-
-          dotnet test eng/service.proj --filter "(TestCategory!=Manually) & (TestCategory!=Live)" --framework $(TestTargetFramework)
+          dotnet test eng/service.proj --filter "(TestCategory!=Manually) & (TestCategory!=Live) ${{ parameters.TestFilters }}" --framework $(TestTargetFramework)
           --logger "trx;LogFileName=$(TestTargetFramework).trx" --logger:"console;verbosity=normal"
           --blame-crash-dump-type full --blame-hang-dump-type full --blame-hang-timeout ${{parameters.TestTimeoutInMinutes}}minutes
           /p:SDKType=${{ parameters.SDKType }}
